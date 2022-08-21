@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center text-muted">
+        دیکشنری آنلاین
+    </h1>
+    <div class="row mt-5">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-8">
+            <form action="" method="post">
+                <div class="input-group mb-3">
+                {% csrf_token %}
+                <select class="input-group-text" id="basic-addon3" name="language">
+                        <option value="فارسی به انگلیسی">فارسی به انگلیسی</option>
+                        <option value="انگلیسی به فارسی">انگلیسی به فارسی</option>
+                     
+                </select>
+                    {% if method == 'POST' %}
+                    <textarea type="text" class="form-control" name='search' id="basic-url" aria-describedby="basic-addon3" rows="5" value='fxvcfv'>{{text}}</textarea>
+                    {% else %}
+                    <textarea type="text" class="form-control" name='search' id="basic-url" aria-describedby="basic-addon3" rows="5" placeholder="واژه یا عبارت خود را بنویسید"></textarea>
+                    {% endif %}
+                </div>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" type="submit">جست و جو</button>
+                  </div>
+            </form>
+        </div>
+    </div>
+   
+    {% if method == 'POST' and count_len < 30 %}
+        <div class="row mt-4 text-center">
+             <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <div class="container word_box">
+                <h3 class="mb-2">
+                    <u>{{translated}}</u>
+                </h3>
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+    {% if dir == 'ltr' %}
+        <div class="row mt-5" dir='ltr'>
+    {% else %}
+        <div class="row mt-5" dir='rtl'>
+    {% endif %}
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+        {% if error %}
+            <h2 class='text-center'>{{'واژه یا عبارت خود را بنویسید'}}</h2>
+        {% elif connection%}
+            <h2 class='text-center'>{{connection}}</h2>
+        {%else%}
+            {% if method == 'POST' and count_len > 30%}
+                <div class="col-md-6 d-flex justify-content-between align-items-center mt-3">
+                <div class="pronounciation"> 
+                    <h6 style="text-align:center">
+                       {{translated}}
+                    </h6>
+                </div>
+            </div>
+            {% endif %}
+        </div>  
+        {% endif %}  
+    </div>
+    
+</div>
+
+{% endblock content %}
